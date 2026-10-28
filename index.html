@@ -37,6 +37,7 @@ button{width:100%;font-size:21px;font-weight:700;padding:16px;border-radius:14px
 <label for="date">주일 날짜</label><input type="date" id="date">
 <label for="name">인도자 이름</label><input id="name" placeholder="예: 홍길동">
 <label for="role">직분</label><select id="role"><option>목사</option><option>전도사</option><option>장로</option><option>권사</option><option>안수집사</option><option selected>집사</option><option>성도</option><option>청년</option><option>기타</option></select>
+<label for="email">포스터·악보 받으실 메일 주소</label><input id="email" type="email" inputmode="email" autocomplete="email" placeholder="예: hong@gmail.com">
 <label for="phone">연락처 <span class="opt">(선택)</span></label><input id="phone" type="tel" placeholder="예: 0917-123-4567">
 </div>
 <div id="songs"></div>
@@ -63,8 +64,9 @@ function show(t,e){var m=document.getElementById('msg');m.textContent=t;m.classN
 function build(){var s=[].slice.call(document.querySelectorAll('.song')).map(function(c){return{t:c.querySelector('.t').value.trim(),k:c.querySelector('.k').value,m:c.querySelector('.m').value.trim(),o:c.querySelector('.o').value.trim()}}).filter(function(x){return x.t});
 if(!v('date')){show('주일 날짜를 골라 주세요.',1);return null}
 if(!v('name')){show('인도자 이름을 적어 주세요.',1);return null}
+var em=v('email');if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){show('포스터와 악보를 받으실 메일 주소를 적어 주세요.',1);return null}
 if(!s.length){show('곡을 한 곡 이상 적어 주세요.',1);return null}
-var L=['[찬양 인도 신청]','','주일 날짜: '+v('date'),'인도자: '+v('name')+' '+v('role'),'연락처: '+(v('phone')||'-'),'','■ 곡 목록'];
+var L=['[찬양 인도 신청]','','주일 날짜: '+v('date'),'인도자: '+v('name')+' '+v('role'),'받을 메일: '+v('email'),'연락처: '+(v('phone')||'-'),'','■ 곡 목록'];
 s.forEach(function(x,i){L.push((i+1)+'. '+x.t+' / 키: '+x.k+(x.m?' / 전조: '+x.m:'')+(x.o?' / 메모: '+x.o:''))});
 L.push('','특송: '+(v('special')||'-'),'','■ 콘티 / 순서·반복',v('conti')||'-');return L.join('\n')}
 document.getElementById('send').onclick=function(){var b=build();if(!b)return;
