@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>브니엘 찬양단 · 찬양 인도 신청</title>
+<meta property="og:title" content="브니엘 찬양단 · 찬양 인도 신청">
+<meta property="og:description" content="한마음제자교회 · 곡과 키를 적어 보내 주시면 포스터와 악보를 만들어 드려요.">
+<meta property="og:image" content="https://chamegirl0808-maker.github.io/hanmaum-praise-leader/og.png">
+<meta property="og:type" content="website">
+<style>
+body{margin:0;background:#FEF9F1;color:#4a3426;font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;font-size:19px;line-height:1.6}
+.wrap{max-width:560px;margin:0 auto;padding:20px 16px 60px}
+header{text-align:center;padding:10px 0 6px}
+header img{width:72px;height:72px;object-fit:contain}
+.church{font-size:22px;font-weight:700;color:#8a5a3c;margin:4px 0}
+h1{font-size:27px;margin:6px 0 14px;color:#5a3520}
+.intro{background:#FBE3D0;border-radius:16px;padding:14px 16px;font-size:18px}
+.card{background:#fff;border:2px solid #F3D3BB;border-radius:16px;padding:16px;margin:16px 0}
+label{display:block;font-weight:700;margin:12px 0 6px;font-size:19px}
+.opt{font-weight:400;color:#9a7a66;font-size:16px}
+input,select,textarea{width:100%;box-sizing:border-box;font-size:19px;padding:12px;border:2px solid #E8C3A5;border-radius:12px;background:#FFFDF9;color:#4a3426;font-family:inherit}
+textarea{min-height:140px}
+.song h3{margin:0 0 4px;color:#C0704A;font-size:20px}
+.row2{display:flex;gap:10px}.row2>div{flex:1}
+button{width:100%;font-size:21px;font-weight:700;padding:16px;border-radius:14px;border:0;margin-top:12px;font-family:inherit;cursor:pointer}
+.primary{background:#E08A5E;color:#fff}
+.sec{background:#fff;color:#C0704A;border:2px solid #E08A5E}
+.add{background:#FBE3D0;color:#8a5a3c}
+#msg{display:none;margin-top:16px;padding:16px;border-radius:14px;background:#E6F4E1;color:#2f5a27;font-size:19px;font-weight:700;text-align:center}
+#msg.err{background:#FDE2DE;color:#9b2c1f}
+</style></head><body><div class="wrap">
+<header><img src="logo.png" alt=""><div class="church">한마음제자교회</div><h1>「브니엘 찬양단 · 찬양 인도 신청」</h1></header>
+<div class="intro">곡과 키를 적어 보내 주시면 포스터와 악보를 만들어 드려요. 멘트와 콘티는 직접 준비해 주세요. 콘티(순서·반복·메들리)를 적어 주시면 그대로 악보를 만들어 드려요.</div>
+<div class="card">
+<label for="date">주일 날짜</label><input type="date" id="date">
+<label for="name">인도자 이름</label><input id="name" placeholder="예: 홍길동">
+<label for="role">직분</label><select id="role"><option>목사</option><option>전도사</option><option>장로</option><option>권사</option><option>안수집사</option><option selected>집사</option><option>성도</option><option>청년</option><option>기타</option></select>
+<label for="phone">연락처 <span class="opt">(선택)</span></label><input id="phone" type="tel" placeholder="예: 0917-123-4567">
+</div>
+<div id="songs"></div>
+<button class="add" id="addBtn" type="button">+ 곡 추가</button>
+<div class="card">
+<label for="special">특송 <span class="opt">(선택)</span></label><input id="special" placeholder="예: 여성 중창 - 은혜">
+<label for="conti">콘티 / 순서·반복 설명 <span class="opt">(선택)</span></label><textarea id="conti" placeholder="예: 1번 곡 2절까지 → 2번 후렴 2번 반복 → 3번과 4번 메들리"></textarea>
+</div>
+<button class="primary" id="send" type="button">보내기</button>
+<button class="sec" id="copy" type="button">내용 복사하기</button>
+<div id="msg"></div>
+</div>
+<script>
+var KEYS=["C","C#/Db","D","Eb","E","F","F#/Gb","G","Ab","A","Bb","B","잘 모름(원키)"],n=0;
+function addSong(){if(n>=6)return;n++;var d=document.createElement('div');d.className='card song';
+d.innerHTML='<h3>'+n+'번 곡</h3><label>곡 제목</label><input class="t" placeholder="곡 제목"><div class="row2"><div><label>키</label><select class="k">'+KEYS.map(function(k){return'<option>'+k+'</option>'}).join('')+'</select></div><div><label>전조 <span class="opt">(선택)</span></label><input class="m" placeholder="예: E→F"></div></div><label>메모 <span class="opt">(선택)</span></label><input class="o" placeholder="예: 후렴 2번">';
+d.querySelector('.k').value='잘 모름(원키)';document.getElementById('songs').appendChild(d);if(n>=6)document.getElementById('addBtn').style.display='none';}
+for(var i=0;i<4;i++)addSong();
+document.getElementById('addBtn').onclick=addSong;
+(function(){var t=new Date(),a=(7-t.getDay())%7||7;t.setDate(t.getDate()+a);
+document.getElementById('date').value=t.getFullYear()+'-'+('0'+(t.getMonth()+1)).slice(-2)+'-'+('0'+t.getDate()).slice(-2);})();
+function v(id){return document.getElementById(id).value.trim()}
+function show(t,e){var m=document.getElementById('msg');m.textContent=t;m.className=e?'err':'';m.style.display='block';m.scrollIntoView({behavior:'smooth',block:'center'})}
+function build(){var s=[].slice.call(document.querySelectorAll('.song')).map(function(c){return{t:c.querySelector('.t').value.trim(),k:c.querySelector('.k').value,m:c.querySelector('.m').value.trim(),o:c.querySelector('.o').value.trim()}}).filter(function(x){return x.t});
+if(!v('date')){show('주일 날짜를 골라 주세요.',1);return null}
+if(!v('name')){show('인도자 이름을 적어 주세요.',1);return null}
+if(!s.length){show('곡을 한 곡 이상 적어 주세요.',1);return null}
+var L=['[찬양 인도 신청]','','주일 날짜: '+v('date'),'인도자: '+v('name')+' '+v('role'),'연락처: '+(v('phone')||'-'),'','■ 곡 목록'];
+s.forEach(function(x,i){L.push((i+1)+'. '+x.t+' / 키: '+x.k+(x.m?' / 전조: '+x.m:'')+(x.o?' / 메모: '+x.o:''))});
+L.push('','특송: '+(v('special')||'-'),'','■ 콘티 / 순서·반복',v('conti')||'-');return L.join('\n')}
+document.getElementById('send').onclick=function(){var b=build();if(!b)return;
+location.href='mailto:hanmaum-jubo+praise@mail.grokbot.com?subject='+encodeURIComponent('[찬양신청] '+v('date')+' '+v('name'))+'&body='+encodeURIComponent(b);
+show('감사합니다! 메일 창이 열렸어요. 메일을 보내 주세요. 메일이 안 열리면 아래 「내용 복사하기」를 눌러 카톡으로 보내 주세요.')};
+document.getElementById('copy').onclick=function(){var b=build();if(!b)return;var ok='복사됐어요. 김미희 권사님께 카톡으로 붙여넣어 보내 주세요.';
+function fb(){var t=document.createElement('textarea');t.value=b;document.body.appendChild(t);t.select();try{document.execCommand('copy');show(ok)}catch(e){show('복사가 안 됐어요. 화면 내용을 직접 적어 보내 주세요.',1)}document.body.removeChild(t)}
+if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(b).then(function(){show(ok)},fb);else fb()};
+</script></body></html>
